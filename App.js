@@ -7,7 +7,9 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
+  TextInput,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const API_ENDPOINT = 'https://randomuser.me/api/?seed=1&page=1&results=20';
 
@@ -16,6 +18,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [textInput, setTextInput] = useState('');
 
   // calling the API endpoint
   useEffect(() => {
@@ -58,14 +61,74 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}> Flat list example </Text>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: 20,
+          paddingBottom: 40,
+          position: 'relative',
+          right: '8%',
+        }}>
+        <Icon
+          style={{
+            padding: 10,
+            right: 45,
+            position: 'absolute',
+            zIndex: 10,
+            borderRadius: 100,
+            backgroundColor: '#ffa',
+            color: '#ff89ff',
+            elevation: 1.5,
+          }}
+          size={20}
+          name="search"
+          color="#000"
+        />
+        <TextInput
+          style={{
+            flex: 1,
+            width: '50%',
+            position: 'absolute',
+            padding: 2,
+            backgroundColor: '#f1f1dc',
+            borderRadius: 50,
+            height: 40,
+            color: '#868383',
+            shadowOffset: {
+              width: 3,
+              height: 5,
+            },
+            shadowRadius: 20,
+            shadowColor: '#000',
+            elevation: 1.5,
+          }}
+          textAlign="center"
+          placeholder="Search..."
+          value={textInput}
+          onChangeText={setTextInput}
+          placeholderTextColor="#ada6a6"
+        />
+      </View>
       <FlatList
+        contentContainerStyle={{paddingBottom: 20}}
         data={data}
         keyExtractor={(item, _index) => _index.toString()}
         renderItem={({item}) => (
           <View style={styles.listItem}>
             <Image
+              style={{borderRadius: 100}}
               source={{uri: item.picture.thumbnail, height: 60, width: 60}}
             />
+            <Text
+              style={{
+                padding: 15,
+                color: '#5b9477',
+                fontSize: 15.6,
+                letterSpacing: 1,
+              }}>{`${item.name.first} ${item.name.last}`}</Text>
           </View>
         )}
       />
@@ -91,7 +154,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: '#101010',
-    marginTop: 60,
+    marginTop: 30,
+    marginBottom: 30,
     fontWeight: '700',
   },
   listItem: {
@@ -99,7 +163,16 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#fff',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      height: 4,
+      width: 5,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 30,
     width: '100%',
+    elevation: 2.2,
   },
   listItemText: {
     fontSize: 18,
